@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -194,17 +193,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    //IEnumerator Search()
-    //{
-    //    var z = 180f;
-    //    while (true)
-    //    {
-    //        _fov.transform.rotation = new Quaternion(0, 0, z, 1).
-    //        z *= -1;
-    //        yield return new WaitForSeconds(_rotateSpeed);
-    //    }
-    //}
-
     IEnumerator Timer()
     {
         var timer = 0f;
@@ -216,14 +204,16 @@ public class EnemyController : MonoBehaviour
         _isTimerEnd = true;
     }
 
-    private void OnDreamWorld()
+    public void OnDreamWorld()
     {
-        GetComponentInChildren<Collider2D>().enabled = false;
+        GetComponentInChildren<PolygonCollider2D>().enabled = false;
+        Debug.Log("In Dream");
     }
 
-    private void OnDreamWorldExit()
+    public void OnDreamWorldExit()
     {
-        GetComponentInChildren<Collider2D>().enabled = true;
+        GetComponentInChildren<PolygonCollider2D>().enabled = true;
+        Debug.Log("Out Dream");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
