@@ -92,11 +92,8 @@ public class GManager : MonoBehaviour
             { 
                 elapsedTime += deltaTime;
             }
-
-            if (elapsedTimeText != null)
-            {
-                elapsedTimeText.text = "Elapsed Time: " + elapsedTime.ToString("F2");
-            }
+            // 経過時間の表示
+            UpdateElapsedTimeText(elapsedTimeText);
         }
     }
 
@@ -133,10 +130,19 @@ public class GManager : MonoBehaviour
         }
     }
 
-    // スコアの表示（リザルト画面で呼ぶ）
-    public void ShowScore()
+    // スコアの表示（リザルト画面で呼ぶ）引数無し
+    //public void ShowScore()
+    //{
+    //    scoreText.text = "Score: " + score.ToString();
+    //}
+
+    // スコアの表示（リザルト画面で呼ぶ） 引数ありに訂正
+    public void ShowScore(Text scoreDisplay)
     {
-        scoreText.text = "Score: " + score.ToString();
+        if (scoreDisplay != null)
+        {
+            scoreDisplay.text = "Score: " + score.ToString();
+        }
     }
 
     // スコアの取得
@@ -146,6 +152,15 @@ public class GManager : MonoBehaviour
     }
 
     //------Time------//
+
+    // 経過時間の表示
+    public void UpdateElapsedTimeText(Text timeDisplay)
+    {
+        if (timeDisplay != null)
+        {
+            timeDisplay.text = "Elapsed Time: " + elapsedTime.ToString("F2");
+        }
+    }
 
     public void ResetTimer()
     {
