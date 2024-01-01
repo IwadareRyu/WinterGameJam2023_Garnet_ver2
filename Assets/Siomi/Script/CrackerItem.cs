@@ -15,6 +15,7 @@ public class CrackerItem : MonoBehaviour
     [SerializeField, Header("クラッカーをインスタンスする位置")] Transform _crackerPos;
     [SerializeField, Header("オーディオソースの設定")] AudioSource _audioSource;
     [SerializeField, Header("出したい音")] AudioClip _audioClip;
+    [SerializeField] GameObject _playerDirection;
     [SerializeField] float _attackDelayTime = 1f;
     bool _isCraker;
     public bool IsCraker => _isCraker;
@@ -65,7 +66,26 @@ public class CrackerItem : MonoBehaviour
                 }
             }
             //クラッカーをインスタンスする
-            Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
+            switch(_playerDirection.transform.rotation.z)
+            {
+                case -90:
+                    GameObject cracker1 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
+                    SpriteRenderer spriteRenderer1 = cracker1.GetComponent<SpriteRenderer>();
+                    spriteRenderer1.flipX = true;
+                    break;
+                case 0:
+                    GameObject cracker2 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.Euler(0, 0, 90));
+                    SpriteRenderer spriteRenderer2 = cracker2.GetComponent<SpriteRenderer>();
+                    spriteRenderer2.flipX = true;
+                    break;
+                case 90:
+                    GameObject cracker3 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
+                    break;
+                case 180:
+                    GameObject cracker4 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.Euler(0, 0, 90));
+                    break;
+            }   
+            //Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
             _isCraker = false;
             _timer = 0;
         }
