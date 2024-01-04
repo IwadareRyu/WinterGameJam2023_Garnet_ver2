@@ -120,9 +120,19 @@ public class GManager : MonoBehaviour
     //------Score-----//
 
     // ƒXƒRƒA‚ÌŒvZ‚ğ‚·‚é
+    // 1/4 Š`ÀC³
+    //public void CalculateScore()
+    //{
+    //    score = jewelCount * jewelScore - (int)(gameTimer * TimeScore);
+
+    //    if (score <= 0)
+    //    {
+    //        score = 0;
+    //    }
+    //}
     public void CalculateScore()
     {
-        score = jewelCount * jewelScore - (int)(gameTimer * TimeScore);
+        score = jewelCount * jewelScore - (int)(elapsedTime * TimeScore);
 
         if (score <= 0)
         {
@@ -146,9 +156,14 @@ public class GManager : MonoBehaviour
     }
 
     // ƒXƒRƒA‚Ìæ“¾
-    public int GetScore()
+    // 1/4 Š`ÀC³
+    //public int GetScore()
+    //{
+    //    return score;
+    //}
+    public void GetScore(Text text)
     {
-        return score;
+         text.text = score.ToString();
     }
 
     //------Time------//
@@ -167,9 +182,14 @@ public class GManager : MonoBehaviour
         gameTimer = initialTimer;
     }
 
-    public float GetGameTimer()
+    //1/4@Š`ÀC³
+    //public float GetGameTimer()
+    //{
+    //    return gameTimer;
+    //}
+    public void GetGameTimer(Text inGameTimer)
     {
-        return gameTimer;
+        inGameTimer.text = gameTimer.ToString("F0");
     }
 
     // “G‚ÆÕ“Ë‚µ‚½‚ÉŒÄ‚Ô
