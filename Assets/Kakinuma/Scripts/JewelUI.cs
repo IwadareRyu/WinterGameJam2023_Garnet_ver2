@@ -9,12 +9,9 @@ using UnityEngine.UI;
 /// </summary>
 public class JewelUI : MonoBehaviour
 {
-    GameObject _gmObject = null;
     GManager _gameManager = null;
     [Tooltip("宝石のUI ゲット状態のもの　配列の最後から表示される")]
     [SerializeField] GameObject[] _jewelUI;
-    /*[Tooltip("宝石のUI ゲットした状態")]
-    [SerializeField] Image _getJewelUI;*/
 
     int _iconNumber = 0; // 宝石の数
     int _nowjewelCount = 0;
@@ -23,33 +20,36 @@ public class JewelUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //    _gmObject = GameObject.Find("GameManager");
         _gameManager = GManager.Instance;
-        _nowjewelCount = _gameManager.GetJewelCount();
         _iconNumber = _jewelUI.Length;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_oldJewelCount < _nowjewelCount) // ★宝石を手に入れたら デバッグ用：Input.GetKeyUp(KeyCode.Space)
+        _nowjewelCount = _gameManager.GetJewelCount();
+
+        if (_oldJewelCount < _nowjewelCount)
         {
             _iconNumber -= 1;
             ShowIcon(_iconNumber);
             _oldJewelCount = _nowjewelCount;
         }
+        /*if (Input.GetKeyUp(KeyCode.Space)) // デバッグ用：Input.GetKeyUp(KeyCode.Space)
+        {
+            _nowjewelCount += 1;
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Debug.Log("Jewel:" + _nowjewelCount);
+        }*/
     }
 
     public void ShowIcon(int number)
     {
-        for (int i = 0; i < _jewelUI.Length; i++)
+        if (number >= 0)
         {
-            _jewelUI[i].SetActive(true);
-        }
-
-        for (int i = 0; i < number; i++)
-        {
-            _jewelUI[i].SetActive(false);
+            _jewelUI[number].SetActive(true);
         }
     }
 }

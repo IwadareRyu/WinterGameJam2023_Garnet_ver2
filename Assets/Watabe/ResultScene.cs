@@ -10,15 +10,15 @@ public class ResultScene : MonoBehaviour
         GManager gameManager = GManager.Instance;
 
         // ゲームマネージャーのスコアを取得
-        int score = gameManager.GetScore();
+        //int score = gameManager.GetScore();
 
         // スコアを表示する
-        Text scoreText = GameObject.Find("Score").GetComponent<Text>();
+        //Text scoreText = GameObject.Find("Score").GetComponent<Text>();
         
-        scoreText.text = score.ToString();
+        //scoreText.text = score.ToString();
 
         // テキストを中央寄せにする
-        scoreText.alignment = TextAnchor.MiddleCenter;
+        //scoreText.alignment = TextAnchor.MiddleCenter;
     }
 
     // ボタンを押したらタイトルに戻る

@@ -7,7 +7,7 @@ public class ItemTimer : MonoBehaviour
 {
     Slider _slider = null;
     [SerializeField] float _interval = 1; // アイテムごとの使用インターバル _timer
-    [Tooltip("～Itemがついたオブジェクト")]
+    [Tooltip("～Itemがついたオブジェクト スタート時に自動で入るように修正済み")]
     [SerializeField] GameObject _itemObject = null;
     [SerializeField] ItemSliderState _state;
     BomItem _bomItemScript = null;
@@ -23,6 +23,7 @@ public class ItemTimer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _itemObject = GameObject.Find("ItemManager"); // 名前以外で探したほうが良いかも
         if (_state == ItemSliderState.Bom)
         {
             _bomItemScript = _itemObject.GetComponent<BomItem>();
