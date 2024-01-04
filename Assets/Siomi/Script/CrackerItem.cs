@@ -51,7 +51,7 @@ public class CrackerItem : MonoBehaviour
         if (_timer >= _interval)
         {
             ////音を出す
-            //_audioSource.PlayOneShot(_audioClip);
+            _audioSource.PlayOneShot(_audioClip);
             //クラッカーの処理を書く
             // 指定範囲のコライダーを全て取得する
             var cols = Physics2D.OverlapBoxAll(_centerShotPos.transform.position, new Vector2(_boxHorizontal, _boxVertical), _centerShotPos.transform.rotation.z);

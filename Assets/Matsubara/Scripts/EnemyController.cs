@@ -48,12 +48,14 @@ public class EnemyController : MonoBehaviour
     [SerializeField, Tooltip("走っているときのSE")]
     private AudioSource _splintSE;
 
+    private Collider2D _myColider;
+
     [SerializeField]
     private Animator _animator;
 
     private RaycastHit2D _hit;
     private int _currentTargetIndex = 0;
-    private bool _isStun = false;
+    //private bool _isStun = false;
     Rigidbody2D _rb;
     private Vector2 _defaultPos = default;
     private Quaternion _defaultQua = Quaternion.identity;
@@ -64,6 +66,7 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        _myColider = GetComponent<Collider2D>();
         DreamStateScripts.DreamWorld += OnDreamWorld;
         DreamStateScripts.DreamWorldEnd += OnDreamWorldExit;
         if (TryGetComponent(out Rigidbody2D rb)) _rb = rb;
@@ -110,7 +113,7 @@ public class EnemyController : MonoBehaviour
         _animator.SetBool("walk", true);
         _walkSE.Play();
 
-        while (!_isStun)
+        while (_stunState.StunState == StunState.Normal)
         {
             // 次の目標地点を取得し、方向を計算して移動
             var currentTargetPos = _targetPoss[_currentTargetIndex % _targetPoss.Length].position;
@@ -137,7 +140,7 @@ public class EnemyController : MonoBehaviour
         _splintSE.Play();
         _animator.SetBool("walk", true);
 
-        while (!_isStun && _playerPos)
+        while (_stunState.StunState == StunState.Normal && _playerPos)
         {
             // プレイヤーを追跡する方向を計算して移動
             var dir = (_playerPos.position - this.transform.position).normalized;
@@ -207,12 +210,14 @@ public class EnemyController : MonoBehaviour
     public void OnDreamWorld()
     {
         GetComponentInChildren<PolygonCollider2D>().enabled = false;
+        _myColider.enabled = false;
         Debug.Log("In Dream");
     }
 
     public void OnDreamWorldExit()
     {
         GetComponentInChildren<PolygonCollider2D>().enabled = true;
+        _myColider.enabled = true;
         Debug.Log("Out Dream");
     }
 
@@ -234,18 +239,28 @@ public class EnemyController : MonoBehaviour
         // 巡回モードの場合、プレイヤーが離れたら一定時間後に巡回モードに戻る
         if (collision.gameObject.CompareTag("Player"))
         {
-            StopCoroutine(_nowCoroutine);
+            if (_nowCoroutine != null) { StopCoroutine(_nowCoroutine); }
             _nowCoroutine = StartCoroutine(Return());
             _exclamationMark.SetActive(false);
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    // プレイヤーと衝突した場合、プレイヤーを初期スポーン地点に戻す
+    //    if (collision.gameObject.CompareTag("Player") && 
+    //        _stunState.StunState == StunState.Normal)
+    //    {
+    //        collision.gameObject.transform.position = _playerSpawnPos.position;
+    //        _playerPos = null;
+    //    }
+    //}
+
+    public void InitialPlayerSpawn(Transform _playerTrans)
     {
-        // プレイヤーと衝突した場合、プレイヤーを初期スポーン地点に戻す
-        if (collision.gameObject.CompareTag("Player"))
+        if (_stunState.StunState == StunState.Normal)
         {
-            collision.gameObject.transform.position = _playerSpawnPos.position;
+            _playerTrans.position = _playerSpawnPos.position;
             _playerPos = null;
         }
     }

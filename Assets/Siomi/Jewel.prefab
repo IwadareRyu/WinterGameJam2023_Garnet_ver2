@@ -101,7 +101,7 @@ MonoBehaviour:
   IsDream: 0
   IsFound: 0
   _audioSource: {fileID: 0}
-  _audioClip: {fileID: 0}
+  _audioClip: {fileID: 8300000, guid: 62ca8188a2baa9941b97aeac53d12fd6, type: 3}
 --- !u!58 &4667859328360573457
 CircleCollider2D:
   m_ObjectHideFlags: 0

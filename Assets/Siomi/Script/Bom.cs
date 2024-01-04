@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Bom : MonoBehaviour
+public class Bom: MonoBehaviour
 {
     [SerializeField, Header("爆発までの時間")] float _bomInterval = 5f;
     [SerializeField, Header("爆発エフェクト")] GameObject _bomEffect;
