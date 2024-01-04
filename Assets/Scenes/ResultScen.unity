@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 826920174}
+    - target: {fileID: 8129569719166656551, guid: 3b014de7ca487af48972bbb6aae33861, type: 3}
+      propertyPath: titleSceneName
+      value: Title
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -856,7 +860,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1690315058}
-  - component: {fileID: 1690315057}
+  - component: {fileID: 1690315059}
   m_Layer: 0
   m_Name: Result
   m_TagString: Untagged
@@ -864,18 +868,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1690315057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1690315056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 940a7c9ff6dbe9943b9b1bdba0f8bfcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1690315058
 Transform:
   m_ObjectHideFlags: 0
@@ -891,6 +883,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1690315059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690315056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fda020cfab6c67479cd2ed88ad3fcaa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1894739121
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,9 +1054,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1690315057}
-        m_TargetAssemblyTypeName: ResultScene, Assembly-CSharp
-        m_MethodName: OnClickStart
+      - m_Target: {fileID: 1690315059}
+        m_TargetAssemblyTypeName: TitleTransition, Assembly-CSharp
+        m_MethodName: TitleScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

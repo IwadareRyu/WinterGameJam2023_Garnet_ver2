@@ -9,6 +9,8 @@ public class StunStateScripts : MonoBehaviour
     [SerializeField] Transform _spriteTrans;
     float _time;
     [SerializeField] Animator _anim;
+    [SerializeField] AudioSource _stunAudioSource;
+    [SerializeField] AudioClip _piyopiyo;
 
     // Start is called before the first frame update
     private void Awake()
@@ -52,6 +54,10 @@ public class StunStateScripts : MonoBehaviour
         if (_anim != null)
         {
             _anim.Play("Stun");
+            if(_stunAudioSource != null && _piyopiyo != null) 
+            {
+                _stunAudioSource.PlayOneShot(_piyopiyo); 
+            }
         }
     }
 
