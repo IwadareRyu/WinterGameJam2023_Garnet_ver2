@@ -109,24 +109,27 @@ public class EnemyController : MonoBehaviour
     IEnumerator Patrol()
     {
         if (_targetPoss.Length <= 0) yield break;
-
+        _currentTargetIndex = 0;
         _animator.SetBool("walk", true);
         _walkSE.Play();
 
-        while (_stunState.StunState == StunState.Normal)
+        while (true)
         {
-            // 次の目標地点を取得し、方向を計算して移動
-            var currentTargetPos = _targetPoss[_currentTargetIndex % _targetPoss.Length].position;
-            Vector2 dir = (currentTargetPos - this.transform.position).normalized;
-            _fov.transform.up = dir * -1;
-            _rb.velocity = dir * _walkSpeed;
-            var targetDistance = Vector2.Distance(currentTargetPos, this.transform.position);
-            _animator.SetFloat("x", dir.x);
-            _animator.SetFloat("y", dir.y);
-            // 目標地点に到達したら次の目標地点へ
-            if (targetDistance < _stopDistance)
+            if (_stunState.StunState == StunState.Normal)
             {
-                _currentTargetIndex++;
+                // 次の目標地点を取得し、方向を計算して移動
+                var currentTargetPos = _targetPoss[_currentTargetIndex % _targetPoss.Length].position;
+                Vector2 dir = (currentTargetPos - this.transform.position).normalized;
+                _fov.transform.up = dir * -1;
+                _rb.velocity = dir * _walkSpeed;
+                var targetDistance = Vector2.Distance(currentTargetPos, this.transform.position);
+                _animator.SetFloat("x", dir.x);
+                _animator.SetFloat("y", dir.y);
+                // 目標地点に到達したら次の目標地点へ
+                if (targetDistance < _stopDistance)
+                {
+                    _currentTargetIndex++;
+                }
             }
 
             yield return new WaitForFixedUpdate();
@@ -151,6 +154,9 @@ public class EnemyController : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
+
+        _nowCoroutine = StartCoroutine(Return());
+
         _exclamationMark.SetActive(false);
     }
 
@@ -163,37 +169,37 @@ public class EnemyController : MonoBehaviour
         _playerPos = null;
         yield return new WaitForSeconds(1);
         // 一定時間後に巡回モードに戻る
-        if (_isPatrollingGuard)
-        {
-            StopCoroutine(_nowCoroutine);
-            _nowCoroutine = StartCoroutine(Patrol());
-            yield break;
-        }
-        else
-        {
-            StartCoroutine(Timer());
-            _walkSE.Play();
+        //if (_isPatrollingGuard)
+        //{
+        //    _nowCoroutine = StartCoroutine(Patrol());
+        //    yield break;
+        //}
+        //else
+        //{
+        StartCoroutine(Timer());
+        _walkSE.Play();
 
-            while (!_isTimerEnd)
+        while (!_isTimerEnd)
+        {
+            var dir = _defaultPos;
+            _fov.transform.up = dir * -1;
+            _rb.velocity = dir * _walkSpeed;
+            var dis = Vector2.Distance(_defaultPos, this.transform.position);
+
+            if (dis < _stopDistance)
             {
-                var dir = _defaultPos;
-                _fov.transform.up = dir * -1;
-                _rb.velocity = dir * _walkSpeed;
-                var dis = Vector2.Distance(_defaultPos, this.transform.position);
-
-                if (dis < _stopDistance)
-                {
-                    _rb.velocity = Vector2.zero;
-                }
-                yield return new WaitForFixedUpdate();
+                _rb.velocity = Vector2.zero;
             }
-
-            _walkSE.Stop();
-            this.transform.position = _defaultPos;
-            this.transform.rotation = _defaultQua;
-            _fov.rotation = _defaultFOVQua;
-            yield break;
+            yield return new WaitForFixedUpdate();
         }
+
+        _walkSE.Stop();
+        this.transform.position = _defaultPos;
+        this.transform.rotation = _defaultQua;
+        _fov.rotation = _defaultFOVQua;
+        _nowCoroutine = StartCoroutine(Patrol());
+        yield break;
+        //}
     }
 
     IEnumerator Timer()
@@ -239,9 +245,12 @@ public class EnemyController : MonoBehaviour
         // 巡回モードの場合、プレイヤーが離れたら一定時間後に巡回モードに戻る
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (_nowCoroutine != null) { StopCoroutine(_nowCoroutine); }
-            _nowCoroutine = StartCoroutine(Return());
-            _exclamationMark.SetActive(false);
+            if (_nowCoroutine != StartCoroutine(Chase()))
+            {
+                if (_nowCoroutine != null) { StopCoroutine(_nowCoroutine); }
+                _nowCoroutine = StartCoroutine(Return());
+                _exclamationMark.SetActive(false);
+            }
         }
     }
 

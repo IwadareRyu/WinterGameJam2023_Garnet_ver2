@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5597806264554050958}
   - component: {fileID: 3579843397099517529}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ExclamationMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5740623781759169663}
   - component: {fileID: 3077434249476447945}
   - component: {fileID: 1624126950035670139}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: circular sector_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 9123415714890951998}
   - component: {fileID: 7035570437202303137}
   - component: {fileID: 6303490685588767413}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ MonoBehaviour:
   _isPatrollingGuard: 0
   _wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   _playerSpawnPos: {fileID: 0}
   _walkSpeed: 5
   _sprintSpeed: 7
@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 2723916193876128268}
   - component: {fileID: 1047648809779263526}
   - component: {fileID: 8395246232525855314}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -52,7 +52,7 @@ public class DreamCanvasScripts : MonoBehaviour
 
     IEnumerator DreamSleep()
     {
-        _backDreamImage.DOFade(0.2f,1f);
+        _backDreamImage.DOFade(1f,1f);
         _nowStunPlayer = Instantiate(_stunPlayer,_playerPos.position,Quaternion.identity);
 
         while(true)
