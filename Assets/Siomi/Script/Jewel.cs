@@ -8,8 +8,10 @@ public class Jewel : MonoBehaviour
 {
     [SerializeField] bool IsDream = false;
     [SerializeField] bool IsFound = false;
-    [SerializeField, Header("オーディオソースの設定")] AudioSource _audioSource;
-    [SerializeField, Header("出したい音")] AudioClip _audioClip;
+    AudioSource _itemAudioSource;
+    [SerializeField, Header("獲得時出したい音")] AudioClip _audioClip;
+    [SerializeField, Header("光らせるとき出したい音")] AudioClip _shineAudioClip;
+    [SerializeField,Header("夢モードで触った時に出すもの")] GameObject _itemShine;
     Collider2D _col;
     SpriteRenderer _spriteRenderer;
 
@@ -21,9 +23,10 @@ public class Jewel : MonoBehaviour
 
         _col = GetComponent<Collider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-
+        _itemAudioSource = GameObject.FindGameObjectWithTag("ItemManager").GetComponent<AudioSource>();
         _col.enabled = false;
         _spriteRenderer.enabled = false;
+        _itemShine.SetActive(false);
     }
 
     private void OnDisable()
@@ -53,14 +56,19 @@ public class Jewel : MonoBehaviour
     {
         if(IsDream)
         {
-            IsFound = true;
+            if (!IsFound)
+            {
+                IsFound = true;
+                _itemShine.SetActive(true);
+                _itemAudioSource.PlayOneShot(_shineAudioClip);
+            }
         }    
         else
         {
             //ゲームマネージャーのジュエルスコアを更新してデストロイする
             GManager.Instance.AddJewelCount();
             //音を出す
-            //_audioSource.PlayOneShot(_audioClip);
+            _itemAudioSource.PlayOneShot(_audioClip);
             Destroy(this.gameObject);
         }
 
