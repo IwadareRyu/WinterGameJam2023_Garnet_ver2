@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +9,8 @@ public class DreamStateScripts : MonoBehaviour
     public static DreamState DreamState => _dreamState;
     [SerializeField] float _dreamTime = 5f;
     [SerializeField] float _dreamCoolTime = 10f;
+    [SerializeField] float _initialAudioVolume = 0.5f;
+    [SerializeField] float _dreamAudioVolume = 0.25f;
     float _time;
     float _defaultUIPersent;
     public float _uiPersent = 1;
@@ -23,11 +25,13 @@ public class DreamStateScripts : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+
         _dreamState = DreamState.Normal;
         _time = _dreamCoolTime;
         _isCountTimer = true;
         CoolTimeUIUpdate();
         _defaultUIPersent = _uiPersent;
+        _initialAudioVolume = GManager.Instance.GetBGMVolume();
     }
 
     private void OnEnable()
@@ -59,7 +63,7 @@ public class DreamStateScripts : MonoBehaviour
         else
         {
 
-            if(_time >= _dreamCoolTime)
+            if (_time >= _dreamCoolTime)
             {
                 _time = _dreamCoolTime;
                 _isCountTimer = true;
@@ -85,6 +89,7 @@ public class DreamStateScripts : MonoBehaviour
         _tmpTrans = _playerTrans.position;
         _isCountTimer = false;
         _time = 0f;
+        GManager.Instance.SetBGMVolume(_dreamAudioVolume);
     }
 
     void ChangeDreamNormal()
@@ -93,6 +98,7 @@ public class DreamStateScripts : MonoBehaviour
         _dreamState = DreamState.Normal;
         _playerTrans.position = _tmpTrans;
         _isCountTimer = false;
+        GManager.Instance.SetBGMVolume(_initialAudioVolume);
     }
 }
 
