@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ItemTimer : MonoBehaviour
 {
     Slider _slider = null;
-    [SerializeField] float _interval = 1; // アイテムごとの使用インターバル _timer
+    //[SerializeField] float _interval = 1; // アイテムごとの使用インターバル _timer
     [Tooltip("～Itemがついたオブジェクト スタート時に自動で入るように修正済み")]
     [SerializeField] GameObject _itemObject = null;
     [SerializeField] ItemSliderState _state;

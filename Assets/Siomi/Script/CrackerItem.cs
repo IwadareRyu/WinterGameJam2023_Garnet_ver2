@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class CrackerItem : MonoBehaviour
     /// <summary> UI用のアイテムインターバルの割合 </summary>
     public float _uiPercent;
     [SerializeField, Header("クラッカーのプレハブ")] GameObject _crackerPrefab;
+    [SerializeField,Header("紙吹雪のオブジェクト")] Transform _confettiTransform;
     [SerializeField, Header("発射点")] GameObject _centerShotPos;
     [SerializeField, Header("横のあたり判定")] float _boxHorizontal = 5f;
     [SerializeField, Header("縦のあたり判定")] float _boxVertical = 5f;
@@ -18,12 +20,20 @@ public class CrackerItem : MonoBehaviour
     [SerializeField] GameObject _playerDirection;
     [SerializeField] float _attackDelayTime = 1f;
     bool _isCraker;
+    float _tmpConfettiX = 0f;
     public bool IsCraker => _isCraker;
 
     private void Start()
     {
         _timer = _interval;
         _isCraker = true;
+        if (_confettiTransform != null)
+        {
+            var scale = _confettiTransform.transform.localScale;
+            _tmpConfettiX = scale.x;
+            scale.x = 0f;
+            _confettiTransform.localScale = scale;
+        }
     }
 
     void Update()
@@ -53,9 +63,16 @@ public class CrackerItem : MonoBehaviour
             ////音を出す
             _audioSource.PlayOneShot(_audioClip);
             //クラッカーの処理を書く
+            Collider2D[] cols = null;
             // 指定範囲のコライダーを全て取得する
-            var cols = Physics2D.OverlapBoxAll(_centerShotPos.transform.position, new Vector2(_boxHorizontal, _boxVertical), _centerShotPos.transform.rotation.z);
-
+            if (_playerDirection.transform.rotation.z > 0f && _playerDirection.transform.rotation.z < 1f)
+            {
+                cols = Physics2D.OverlapBoxAll(_centerShotPos.transform.position, new Vector2(_boxVertical, _boxHorizontal), _centerShotPos.transform.rotation.z);
+            }
+            else
+            {
+                cols = Physics2D.OverlapBoxAll(_centerShotPos.transform.position, new Vector2(_boxHorizontal, _boxVertical), _centerShotPos.transform.rotation.z);
+            }
             //プレイヤーとエネミーを探す
             foreach (var c in cols)
             {
@@ -65,26 +82,42 @@ public class CrackerItem : MonoBehaviour
                     stunState.ChangeStunState();
                 }
             }
-            //クラッカーをインスタンスする
-            switch(_playerDirection.transform.rotation.z)
+
+            GameObject cracker1 = Instantiate(_crackerPrefab, _crackerPos.position, _playerDirection.transform.rotation);
+            SpriteRenderer spriteRenderer1 = cracker1.GetComponent<SpriteRenderer>();
+            spriteRenderer1.flipX = true;
+            if(spriteRenderer1.transform.rotation.z == 1f)
             {
-                case -90:
-                    GameObject cracker1 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
-                    SpriteRenderer spriteRenderer1 = cracker1.GetComponent<SpriteRenderer>();
-                    spriteRenderer1.flipX = true;
-                    break;
-                case 0:
-                    GameObject cracker2 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.Euler(0, 0, 90));
-                    SpriteRenderer spriteRenderer2 = cracker2.GetComponent<SpriteRenderer>();
-                    spriteRenderer2.flipX = true;
-                    break;
-                case 90:
-                    GameObject cracker3 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
-                    break;
-                case 180:
-                    GameObject cracker4 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.Euler(0, 0, 90));
-                    break;
-            }   
+                spriteRenderer1.flipY = true;
+            }
+            if (_confettiTransform != null)
+            {
+                var sequence = DOTween.Sequence();
+                sequence.Append(_confettiTransform.DOScaleX(_tmpConfettiX, 0.5f))
+                    .AppendInterval(1f)
+                    .OnComplete(() => _confettiTransform.DOScaleX(0f, 0.1f));
+                sequence.Play().SetLink(_confettiTransform.gameObject);
+            }
+            //クラッカーをインスタンスする
+            //switch (_playerDirection.transform.rotation.z)
+            //{
+            //    case -90:
+            //        GameObject cracker1 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.Euler(0, 0, -90));
+            //        SpriteRenderer spriteRenderer1 = cracker1.GetComponent<SpriteRenderer>();
+            //        spriteRenderer1.flipX = true;
+            //        break;
+            //    case 0:
+            //        GameObject cracker2 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
+            //        SpriteRenderer spriteRenderer2 = cracker2.GetComponent<SpriteRenderer>();
+            //        spriteRenderer2.flipX = true;
+            //        break;
+            //    case 90:
+            //        GameObject cracker3 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.Euler(0, 0, 90));
+            //        break;
+            //    case 180:
+            //        GameObject cracker4 = Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.Euler(0, 0, 180));
+            //        break;
+            //}   
             //Instantiate(_crackerPrefab, _crackerPos.position, Quaternion.identity);
             _isCraker = false;
             _timer = 0;
@@ -94,6 +127,13 @@ public class CrackerItem : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireCube(_centerShotPos.transform.position, new Vector3(_boxHorizontal, _boxVertical, 0));
+        if (_playerDirection.transform.rotation.z > 0f && _playerDirection.transform.rotation.z < 1f)
+        {
+            Gizmos.DrawWireCube(_centerShotPos.transform.position, new Vector3(_boxVertical, _boxHorizontal, 0));
+        }
+        else
+        {
+            Gizmos.DrawWireCube(_centerShotPos.transform.position, new Vector3(_boxHorizontal, _boxVertical, 0));
+        }
     }
 }

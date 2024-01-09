@@ -11,7 +11,7 @@ public class GManager : MonoBehaviour
     [Header("経過時間表示テキスト")] public Text elapsedTimeText;
     [Header("スコア表示テキスト")]public Text scoreText;
     [Header("敵と衝突時の残り時間スピードアップ速度")] public float speedUpSpeed = 10.0f;
-    [Header("タイムスコア（１秒につき何点乗算するか）")] public float TimeScore = 100.0f;
+    [Header("タイムスコア（１秒につき何点乗算するか）")] public float TimeScore = 50.0f;
     [Header("ジュエルスコア（１つにつき何点乗算するか）")] public int jewelScore = 10000;
     [Header("BGMデータ")] public AudioSource bgmSource;
     [Header("BGMの音量調整")] public AudioClip bgm;
@@ -163,7 +163,19 @@ public class GManager : MonoBehaviour
     //}
     public void GetScore(Text text)
     {
-         text.text = score.ToString();
+         text.text = score.ToString("D5");
+    }
+
+    public void GetJuwelScore(Text text)
+    {
+        var juwelscore = jewelCount * jewelScore;
+        text.text = juwelscore.ToString("D5");
+    }
+
+    public void GetTimeScore(Text text)
+    {
+        var timeScore = (int)(elapsedTime * TimeScore);
+        text.text = timeScore.ToString("D5");
     }
 
     //------Time------//
