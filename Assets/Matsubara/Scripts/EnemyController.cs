@@ -30,9 +30,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField, Tooltip("持ち場に強制的に戻されるまでの時間")]
     private float _returnTime = 2f;
 
-    [SerializeField, Tooltip("首の回転速度")]
-    private float _rotateSpeed = 0.5f;
-
     [SerializeField, Tooltip("視界")]
     private Transform _fov;
 

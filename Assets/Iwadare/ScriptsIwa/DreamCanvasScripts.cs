@@ -16,7 +16,7 @@ public class DreamCanvasScripts : MonoBehaviour
     [SerializeField] float _maxY;
     [SerializeField] float _minsleepSpeed;
     [SerializeField] float _maxsleepSpeed;
-    [SerializeField] float _dreamTime = 0.1f;
+    //[SerializeField] float _dreamTime = 0.1f;
     Vector3 _cameraPos;
     Coroutine _nowDreamCoroutine;
 
@@ -66,7 +66,7 @@ public class DreamCanvasScripts : MonoBehaviour
             _cameraPos = camera.position;
             _cameraPos.x += 25;
             var YPosRam = Random.Range(_minY,_maxY);
-            _cameraPos.y = YPosRam;
+            _cameraPos.y += YPosRam;
             _cameraPos.z += 30;
             var speedRam = Random.Range(_minsleepSpeed, _maxsleepSpeed);
             var sleepImage = Instantiate(_sleepImage,_cameraPos,Quaternion.identity);

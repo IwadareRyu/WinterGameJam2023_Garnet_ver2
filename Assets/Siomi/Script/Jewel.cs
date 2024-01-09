@@ -14,6 +14,7 @@ public class Jewel : MonoBehaviour
     [SerializeField,Header("夢モードで触った時に出すもの")] GameObject _itemShine;
     Collider2D _col;
     SpriteRenderer _spriteRenderer;
+    [SerializeField] GameObject _prefabGoalCanvas;
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +68,11 @@ public class Jewel : MonoBehaviour
         {
             //ゲームマネージャーのジュエルスコアを更新してデストロイする
             GManager.Instance.AddJewelCount();
+            if(GManager.Instance.GetJewelCount() == 1)
+            {
+                FindObjectOfType<Goal>().GoalPointEnable();
+                Instantiate(_prefabGoalCanvas,new Vector2(0,0),Quaternion.identity);
+            }
             //音を出す
             _itemAudioSource.PlayOneShot(_audioClip);
             Destroy(this.gameObject);

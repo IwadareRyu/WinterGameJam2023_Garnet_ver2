@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CrackerItem _crakerItem;
     [SerializeField] BoarInterval _boarInterval;
     [SerializeField] BomItem _bomItem;
+    [SerializeField] Image _speedBoots;
     [SerializeField] Animator _anim;
     [SerializeField] AudioSource _runAudioSource;
     [SerializeField] AudioSource _itemUseAudioSource;
@@ -31,6 +33,7 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _tmpy = 1;
         _runAudioSource.clip = _audioRun;
+        _speedBoots.enabled = false;
     }
 
     // Update is called once per frame
@@ -78,7 +81,7 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetButtonDown("Fire3") && _boarInterval.BoarUseBool)
                     {
                         BoarSpeedUp();
-                        
+                        _speedBoots.enabled = true;
                     }// イノシシスピアップ
 
                     if (Input.GetButtonDown("Skill") && DreamStateScripts.IsCountTimer)
@@ -191,7 +194,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.TryGetComponent<Jewel>(out var jewel))
         {
-            jewel.JewelFound();         
+            jewel.JewelFound();
         }
     }
 
@@ -199,6 +202,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_bearBool)
         {
+            _speedBoots.enabled = false;
             Stun();
             _runAudioSource.pitch = 1;
             if (collision.gameObject.TryGetComponent<StunStateScripts>(out var stun))

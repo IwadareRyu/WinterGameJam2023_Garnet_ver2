@@ -1,5 +1,3 @@
-using DG.Tweening;
-using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,7 +29,6 @@ public class DreamStateScripts : MonoBehaviour
         _isCountTimer = true;
         CoolTimeUIUpdate();
         _defaultUIPersent = _uiPersent;
-        _initialAudioVolume = GManager.Instance.GetBGMVolume();
     }
 
     private void OnEnable()
@@ -44,6 +41,11 @@ public class DreamStateScripts : MonoBehaviour
     {
         DreamWorld -= ChangeDream;
         DreamWorldEnd -= ChangeDreamNormal;
+    }
+
+    private void Start()
+    {
+        _initialAudioVolume = GManager.Instance.GetBGMVolume();
     }
 
     // Update is called once per frame

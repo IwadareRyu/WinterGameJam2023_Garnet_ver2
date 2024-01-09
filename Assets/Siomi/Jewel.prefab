@@ -104,6 +104,7 @@ MonoBehaviour:
   _audioClip: {fileID: 8300000, guid: 960ed44f68717934c902afd52d17f34e, type: 3}
   _shineAudioClip: {fileID: 8300000, guid: 62ca8188a2baa9941b97aeac53d12fd6, type: 3}
   _itemShine: {fileID: 4796261610220140513}
+  _prefabGoalCanvas: {fileID: 8520062081173875498, guid: 14a8a1f8f3f8c384fad5e24c683ec065, type: 3}
 --- !u!58 &4667859328360573457
 CircleCollider2D:
   m_ObjectHideFlags: 0
